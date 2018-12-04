@@ -10,12 +10,12 @@ namespace KoffieMachineDomain
     {
         public override string Name => "Capuccino";
         public virtual bool HasSugar { get; set; }
-        public virtual Amount SugarAmount { get; set; }
-        protected virtual Strength DrinkStrength { get; set; }
+        public virtual ContaintmentLevel SugarAmount { get; set; }
+        protected virtual ContaintmentLevel DrinkStrength { get; set; }
 
         public Capuccino()
         {
-            DrinkStrength = Strength.Normal;
+            DrinkStrength = ContaintmentLevel.Normal;
         }
 
         public override double GetPrice()

@@ -16,9 +16,9 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
         public MainViewModel()
         {
-            _coffeeStrength = Strength.Normal;
-            _sugarAmount = Amount.Normal;
-            _milkAmount = Amount.Normal;
+            _coffeeStrength = ContaintmentLevel.Normal;
+            _sugarAmount = ContaintmentLevel.Normal;
+            _milkAmount = ContaintmentLevel.Normal;
 
             LogText = new ObservableCollection<string>();
             LogText.Add("Starting up...");
@@ -115,22 +115,22 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #endregion Payment
 
         #region Coffee buttons
-        private Strength _coffeeStrength;
-        public Strength CoffeeStrength
+        private ContaintmentLevel _coffeeStrength;
+        public ContaintmentLevel CoffeeStrength
         {
             get { return _coffeeStrength; }
             set { _coffeeStrength = value; RaisePropertyChanged(() => CoffeeStrength); }
         }
 
-        private Amount _sugarAmount;
-        public Amount SugarAmount
+        private ContaintmentLevel _sugarAmount;
+        public ContaintmentLevel SugarAmount
         {
             get { return _sugarAmount; }
             set { _sugarAmount = value; RaisePropertyChanged(() => SugarAmount); }
         }
 
-        private Amount _milkAmount;
-        public Amount MilkAmount
+        private ContaintmentLevel _milkAmount;
+        public ContaintmentLevel MilkAmount
         {
             get { return _milkAmount; }
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }

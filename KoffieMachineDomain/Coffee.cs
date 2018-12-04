@@ -10,10 +10,10 @@ namespace KoffieMachineDomain
     {
         
         public virtual bool HasSugar { get; set; }
-        public virtual Amount SugarAmount { get; set; }
+        public virtual ContaintmentLevel SugarAmount { get; set; }
         public virtual bool HasMilk { get; set; }
-        public virtual Amount MilkAmount { get; set; }
-        public virtual Strength DrinkStrength { get; set; }
+        public virtual ContaintmentLevel MilkAmount { get; set; }
+        public virtual ContaintmentLevel DrinkStrength { get; set; }
 
         public override string Name => "Koffie";
 

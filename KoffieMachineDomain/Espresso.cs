@@ -10,9 +10,9 @@ namespace KoffieMachineDomain
     {
         public override string Name => "Espresso";
         public virtual bool HasSugar { get; set; }
-        public virtual Amount SugarAmount { get; set; }
+        public virtual ContaintmentLevel SugarAmount { get; set; }
         public virtual bool HasMilk { get; set; }
-        public virtual Amount MilkAmount { get; set; }
+        public virtual ContaintmentLevel MilkAmount { get; set; }
 
         public override double GetPrice()
         {
@@ -22,8 +22,8 @@ namespace KoffieMachineDomain
         public override void LogDrinkMaking(ICollection<string> log)
         {
             base.LogDrinkMaking(log);
-            log.Add($"Setting coffee strength to {Strength.Strong}.");
-            log.Add($"Setting coffee amount to {Amount.Few}.");
+            log.Add($"Setting coffee strength to {ContaintmentLevel.Max}.");
+            log.Add($"Setting coffee amount to {ContaintmentLevel.Min}.");
             log.Add("Filling with coffee...");
 
             if (HasSugar)

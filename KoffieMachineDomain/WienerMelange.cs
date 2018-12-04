@@ -13,7 +13,7 @@ namespace KoffieMachineDomain
         public WienerMelange()
         {
             HasSugar = false;
-            DrinkStrength = Strength.Weak;
+            DrinkStrength = ContaintmentLevel.Min;
         }
 
         public override double GetPrice()

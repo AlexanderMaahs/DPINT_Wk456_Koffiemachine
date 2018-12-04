@@ -51,21 +51,21 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0" Orientation="Vertical" HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Strength</Label>
-                    <RadioButton GroupName="Strength" IsChecked="{Binding Path=CoffeeStrength, Converter={StaticResource EnumToBool}, ConverterParameter=Weak}">Weak</RadioButton>
+                    <RadioButton GroupName="Strength" IsChecked="{Binding Path=CoffeeStrength, Converter={StaticResource EnumToBool}, ConverterParameter=Min}">Weak</RadioButton>
                     <RadioButton GroupName="Strength" IsChecked="{Binding Path=CoffeeStrength, Converter={StaticResource EnumToBool}, ConverterParameter=Normal}">Normal</RadioButton>
-                    <RadioButton GroupName="Strength" IsChecked="{Binding Path=CoffeeStrength, Converter={StaticResource EnumToBool}, ConverterParameter=Strong}">Strong</RadioButton>
+                    <RadioButton GroupName="Strength" IsChecked="{Binding Path=CoffeeStrength, Converter={StaticResource EnumToBool}, ConverterParameter=Max}">Strong</RadioButton>
                 </StackPanel>
                 <StackPanel Grid.Column="1" Orientation="Vertical" HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Sugar</Label>
-                    <RadioButton GroupName="Sugar" IsChecked="{Binding Path=SugarAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Few}">Few</RadioButton>
+                    <RadioButton GroupName="Sugar" IsChecked="{Binding Path=SugarAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Min}">Few</RadioButton>
                     <RadioButton GroupName="Sugar" IsChecked="{Binding Path=SugarAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Normal}">Normal</RadioButton>
-                    <RadioButton GroupName="Sugar" IsChecked="{Binding Path=SugarAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Extra}">Extra</RadioButton>
+                    <RadioButton GroupName="Sugar" IsChecked="{Binding Path=SugarAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Max}">Extra</RadioButton>
                 </StackPanel>
                 <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Center">
                     <Label FontWeight="Bold">Milk</Label>
-                    <RadioButton GroupName="Milk" IsChecked="{Binding Path=MilkAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Few}">Few</RadioButton>
+                    <RadioButton GroupName="Milk" IsChecked="{Binding Path=MilkAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Min}">Few</RadioButton>
                     <RadioButton GroupName="Milk" IsChecked="{Binding Path=MilkAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Normal}">Normal</RadioButton>
-                    <RadioButton GroupName="Milk" IsChecked="{Binding Path=MilkAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Extra}">Extra</RadioButton>
+                    <RadioButton GroupName="Milk" IsChecked="{Binding Path=MilkAmount, Converter={StaticResource EnumToBool}, ConverterParameter=Max}">Extra</RadioButton>
                 </StackPanel>
             </Grid>
             <Separator />
