@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Enums
 {
-    public enum ContaintmentLevel
+    public enum ContainmentLevel
     {
         Normal = 0, Min, Max
     }

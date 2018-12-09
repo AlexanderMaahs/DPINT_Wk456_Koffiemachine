@@ -45,7 +45,7 @@
     <Compile Include="Drinks\Decorators\StrengthDrinkDecorator.cs" />
     <Compile Include="Drinks\Decorators\SugarDrinkDecorator.cs" />
     <Compile Include="Drinks\DrinkFactory.cs" />
-    <Compile Include="Enums\ContaintmentLevel.cs" />
+    <Compile Include="Enums\ContainmentLevel.cs" />
     <Compile Include="Drinks\CafeAuLaitDrink.cs" />
     <Compile Include="Drinks\CapuccinoDrink.cs" />
     <Compile Include="Drinks\CoffeeDrink.cs" />

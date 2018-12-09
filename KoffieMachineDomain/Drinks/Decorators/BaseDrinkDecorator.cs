@@ -1,4 +1,7 @@
-﻿namespace KoffieMachineDomain.Drinks.Decorators
+﻿using System.Collections.ObjectModel;
+using KoffieMachineDomain.Enums;
+
+namespace KoffieMachineDomain.Drinks.Decorators
 {
     public abstract class BaseDrinkDecorator : IDrink
     {
@@ -10,9 +13,35 @@
             set { _nextDrink.Price = value; }
         }
 
+        public string Name
+        {
+            get { return _nextDrink.Name; }
+            set { _nextDrink.Name = value; }
+        }
+        public ContainmentLevel SugarAmount
+        {
+            get { return _nextDrink.SugarAmount; }
+            set { _nextDrink.SugarAmount = value; }
+        }
+        public ContainmentLevel MilkAmount
+        {
+            get { return _nextDrink.MilkAmount; }
+            set { _nextDrink.MilkAmount = value; }
+        }
+        public ContainmentLevel DrinkStrength
+        {
+            get { return _nextDrink.DrinkStrength; }
+            set { _nextDrink.DrinkStrength = value; }
+        }
+
         public virtual double GetPrice()
         {
             return _nextDrink.GetPrice();
+        }
+
+        public void LogDrinkMaking(ObservableCollection<string> logText)
+        {
+            _nextDrink.LogDrinkMaking(logText);
         }
     }
 }

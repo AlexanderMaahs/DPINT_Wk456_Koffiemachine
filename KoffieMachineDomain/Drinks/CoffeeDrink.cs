@@ -1,6 +1,7 @@
 ﻿using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,19 +12,15 @@ namespace KoffieMachineDomain.Drinks
     {
 
         public virtual bool HasSugar { get; set; }
-        public virtual ContaintmentLevel SugarAmount { get; set; }
         public virtual bool HasMilk { get; set; }
-        public virtual ContaintmentLevel MilkAmount { get; set; }
-        public virtual ContaintmentLevel DrinkStrength { get; set; }
-
-        public override string Name => "Koffie";
 
         public override double GetPrice()
         {
+            Name = "Koffie";
             return BaseDrinkPrice;
         }
 
-        public override void LogDrinkMaking(ICollection<string> log)
+        public override void LogDrinkMaking(ObservableCollection<string> log)
         {
             base.LogDrinkMaking(log);
             log.Add($"Setting coffee strength to {DrinkStrength}.");

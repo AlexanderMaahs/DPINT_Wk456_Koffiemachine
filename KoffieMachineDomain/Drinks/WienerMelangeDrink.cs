@@ -9,12 +9,11 @@ namespace KoffieMachineDomain.Drinks
 {
     public class WienerMelangeDrink : CapuccinoDrink
     {
-        public override string Name => "Wiener Melange";
-
         public WienerMelangeDrink()
         {
+            Name = "Wiener Melange";
             HasSugar = false;
-            DrinkStrength = ContaintmentLevel.Min;
+            DrinkStrength = ContainmentLevel.Min;
         }
 
         public override double GetPrice()

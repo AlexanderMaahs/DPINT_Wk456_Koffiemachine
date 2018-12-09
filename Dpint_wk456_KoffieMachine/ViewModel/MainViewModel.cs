@@ -13,26 +13,29 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private BalanceFactory _userFactory;
+        private BalanceFactory _balanceFactory;
         public ObservableCollection<string> LogText { get; private set; }
 
         public MainViewModel()
         {
-            _coffeeStrength = ContaintmentLevel.Normal;
-            _sugarAmount = ContaintmentLevel.Normal;
-            _milkAmount = ContaintmentLevel.Normal;
+            // Init values
+            _coffeeStrength = ContainmentLevel.Normal;
+            _sugarAmount = ContainmentLevel.Normal;
+            _milkAmount = ContainmentLevel.Normal;
 
+            //Log
             LogText = new ObservableCollection<string>();
             LogText.Add("Starting up...");
             LogText.Add("Done, what would you like to drink?");
 
-            _userFactory = new BalanceFactory();
-            PaymentCardUsernames = new ObservableCollection<string>(_userFactory.Users);
+            //Payment
+            _balanceFactory = new BalanceFactory();
+            PaymentCardUsernames = new ObservableCollection<string>(_balanceFactory.Users);
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
         }
 
         #region Drink properties to bind to
-        private Drink _selectedDrink;
+        private IDrink _selectedDrink;
         public string SelectedDrinkName
         {
             get { return _selectedDrink?.Name; }
@@ -59,15 +62,15 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         {
             if (_selectedDrink != null && payWithCard)
             {
-                insertedMoney = _userFactory.GetBalance(SelectedPaymentCardUsername);
+                insertedMoney = _balanceFactory.GetBalance(SelectedPaymentCardUsername);
                 if (RemainingPriceToPay <= insertedMoney)
                 {
-                    _userFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
+                    _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
                     RemainingPriceToPay = 0;
                 }
                 else // Pay what you can, fill up with coins later.
                 {
-                    _userFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
+                    _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
 
                     RemainingPriceToPay -= insertedMoney;
                 }
@@ -88,7 +91,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             }
         }
 
-        public double PaymentCardRemainingAmount => _userFactory.GetBalance(SelectedPaymentCardUsername);
+        public double PaymentCardRemainingAmount => _balanceFactory.GetBalance(SelectedPaymentCardUsername);
 
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
@@ -112,22 +115,22 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #endregion Payment
 
         #region Coffee buttons
-        private ContaintmentLevel _coffeeStrength;
-        public ContaintmentLevel CoffeeStrength
+        private ContainmentLevel _coffeeStrength;
+        public ContainmentLevel CoffeeStrength
         {
             get { return _coffeeStrength; }
             set { _coffeeStrength = value; RaisePropertyChanged(() => CoffeeStrength); }
         }
 
-        private ContaintmentLevel _sugarAmount;
-        public ContaintmentLevel SugarAmount
+        private ContainmentLevel _sugarAmount;
+        public ContainmentLevel SugarAmount
         {
             get { return _sugarAmount; }
             set { _sugarAmount = value; RaisePropertyChanged(() => SugarAmount); }
         }
 
-        private ContaintmentLevel _milkAmount;
-        public ContaintmentLevel MilkAmount
+        private ContainmentLevel _milkAmount;
+        public ContainmentLevel MilkAmount
         {
             get { return _milkAmount; }
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }
