@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain.Enums
+namespace KoffieMachineDomain.Drinks.Decorators
 {
-    public enum ContaintmentLevel
+    public class StrengthDrinkDecorator : BaseDrinkDecorator
     {
-        Normal = 0, Min, Max
     }
 }

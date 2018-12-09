@@ -1,14 +1,15 @@
-﻿using System;
+﻿using KoffieMachineDomain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain
+namespace KoffieMachineDomain.Drinks
 {
-    public class Coffee : Drink
+    public class CoffeeDrink : Drink
     {
-        
+
         public virtual bool HasSugar { get; set; }
         public virtual ContaintmentLevel SugarAmount { get; set; }
         public virtual bool HasMilk { get; set; }

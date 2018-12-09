@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain
+namespace KoffieMachineDomain.Drinks
 {
-    public class CafeAuLait : Drink
+    public class CafeAuLaitDrink : Drink
     {
         public override string Name => "Café au Lait";
 

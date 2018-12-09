@@ -1,29 +1,32 @@
-﻿using System;
+﻿using KoffieMachineDomain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain
+namespace KoffieMachineDomain.Drinks
 {
-    public class Espresso : Drink
+    public class CapuccinoDrink : Drink
     {
-        public override string Name => "Espresso";
+        public override string Name => "Capuccino";
         public virtual bool HasSugar { get; set; }
         public virtual ContaintmentLevel SugarAmount { get; set; }
-        public virtual bool HasMilk { get; set; }
-        public virtual ContaintmentLevel MilkAmount { get; set; }
+        protected virtual ContaintmentLevel DrinkStrength { get; set; }
+
+        public CapuccinoDrink()
+        {
+            DrinkStrength = ContaintmentLevel.Normal;
+        }
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice + 0.7;
+            return BaseDrinkPrice + 0.8;
         }
-
         public override void LogDrinkMaking(ICollection<string> log)
         {
             base.LogDrinkMaking(log);
-            log.Add($"Setting coffee strength to {ContaintmentLevel.Max}.");
-            log.Add($"Setting coffee amount to {ContaintmentLevel.Min}.");
+            log.Add($"Setting coffee strength to {DrinkStrength}.");
             log.Add("Filling with coffee...");
 
             if (HasSugar)

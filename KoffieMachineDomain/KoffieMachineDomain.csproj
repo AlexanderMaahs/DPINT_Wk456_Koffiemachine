@@ -40,14 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drinks\Decorators\BaseDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\MilkDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\StrengthDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\SugarDrinkDecorator.cs" />
+    <Compile Include="Drinks\DrinkFactory.cs" />
     <Compile Include="Enums\ContaintmentLevel.cs" />
-    <Compile Include="CafeAuLait.cs" />
-    <Compile Include="Capuccino.cs" />
-    <Compile Include="Coffee.cs" />
-    <Compile Include="Drink.cs" />
-    <Compile Include="Espresso.cs" />
+    <Compile Include="Drinks\CafeAuLaitDrink.cs" />
+    <Compile Include="Drinks\CapuccinoDrink.cs" />
+    <Compile Include="Drinks\CoffeeDrink.cs" />
+    <Compile Include="Drinks\Drink.cs" />
+    <Compile Include="Drinks\EspressoDrink.cs" />
+    <Compile Include="Drinks\IDrink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WienerMelange.cs" />
+    <Compile Include="Drinks\WienerMelangeDrink.cs" />
+    <Compile Include="BalanceFactory.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

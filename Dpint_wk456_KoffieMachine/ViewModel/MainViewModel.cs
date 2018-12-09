@@ -1,6 +1,8 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using KoffieMachineDomain;
+using KoffieMachineDomain.Drinks;
+using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,7 +13,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private Dictionary<string, double> _cashOnCards;
+        private BalanceFactory _userFactory;
         public ObservableCollection<string> LogText { get; private set; }
 
         public MainViewModel()
@@ -24,12 +26,8 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             LogText.Add("Starting up...");
             LogText.Add("Done, what would you like to drink?");
 
-            _cashOnCards = new Dictionary<string, double>();
-            _cashOnCards["Arjen"] = 5.0;
-            _cashOnCards["Bert"] = 3.5;
-            _cashOnCards["Chris"] = 7.0;
-            _cashOnCards["Daan"] = 6.0;
-            PaymentCardUsernames = new ObservableCollection<string>(_cashOnCards.Keys);
+            _userFactory = new BalanceFactory();
+            PaymentCardUsernames = new ObservableCollection<string>(_userFactory.Users);
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
         }
 
@@ -61,16 +59,16 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         {
             if (_selectedDrink != null && payWithCard)
             {
-                insertedMoney = _cashOnCards[SelectedPaymentCardUsername];
+                insertedMoney = _userFactory.GetBalance(SelectedPaymentCardUsername);
                 if (RemainingPriceToPay <= insertedMoney)
                 {
-                    _cashOnCards[SelectedPaymentCardUsername] = insertedMoney - RemainingPriceToPay;
+                    _userFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
                     RemainingPriceToPay = 0;
                 }
                 else // Pay what you can, fill up with coins later.
                 {
-                    _cashOnCards[SelectedPaymentCardUsername] = 0;
-                    
+                    _userFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
+
                     RemainingPriceToPay -= insertedMoney;
                 }
                 LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
@@ -89,9 +87,8 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 _selectedDrink = null;
             }
         }
-        
 
-        public double PaymentCardRemainingAmount => _cashOnCards.ContainsKey(SelectedPaymentCardUsername ?? "") ? _cashOnCards[SelectedPaymentCardUsername] : 0;
+        public double PaymentCardRemainingAmount => _userFactory.GetBalance(SelectedPaymentCardUsername);
 
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
@@ -142,26 +139,26 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength };
+                    _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength };
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso();
+                    _selectedDrink = new EspressoDrink();
                     break;
                 case "Capuccino":
-                    _selectedDrink = new Capuccino();
+                    _selectedDrink = new CapuccinoDrink();
                     break;
                 case "Wiener Melange":
-                    _selectedDrink = new WienerMelange();
+                    _selectedDrink = new WienerMelangeDrink();
                     break;
                 case "Café au Lait":
-                    _selectedDrink = new CafeAuLait();
+                    _selectedDrink = new CafeAuLaitDrink();
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName}, recipe not found.");
                     break;
             }
-            
-            if(_selectedDrink != null)
+
+            if (_selectedDrink != null)
             {
                 RemainingPriceToPay = _selectedDrink.GetPrice();
                 LogText.Add($"Selected {_selectedDrink.Name}, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
@@ -178,16 +175,16 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount };
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso(){ HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new EspressoDrink() { HasSugar = true, SugarAmount = SugarAmount };
                     break;
                 case "Capuccino":
-                    _selectedDrink = new Capuccino() { HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new CapuccinoDrink() { HasSugar = true, SugarAmount = SugarAmount };
                     break;
                 case "Wiener Melange":
-                    _selectedDrink = new WienerMelange() { HasSugar = true, SugarAmount = SugarAmount };
+                    _selectedDrink = new WienerMelangeDrink() { HasSugar = true, SugarAmount = SugarAmount };
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName} with sugar, recipe not found.");
@@ -209,10 +206,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasMilk = true, MilkAmount = MilkAmount };
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso() { HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new EspressoDrink() { HasMilk = true, MilkAmount = MilkAmount };
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
@@ -236,10 +233,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             switch (drinkName)
             {
                 case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
                     break;
                 case "Espresso":
-                    _selectedDrink = new Espresso() { HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
+                    _selectedDrink = new EspressoDrink() { HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
                     break;
                 default:
                     LogText.Add($"Could not make {drinkName} with milk, recipe not found.");

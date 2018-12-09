@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KoffieMachineDomain.Enums
+namespace KoffieMachineDomain.Drinks
 {
-    public enum ContaintmentLevel
+    public interface IDrink
     {
-        Normal = 0, Min, Max
+        double Price { get; set; }
+
+        double GetPrice();
     }
 }
