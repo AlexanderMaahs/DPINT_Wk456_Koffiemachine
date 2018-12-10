@@ -8,9 +8,11 @@ namespace KoffieMachineDomain.Drinks.Decorators
 {
     public class MilkDrinkDecorator : BaseDrinkDecorator
     {
+        private const double MILK_PRICE = 0.15;
+
         public override double GetPrice()
         {
-            Price += 0.15;
+            Price += MILK_PRICE;
             return base.GetPrice();
         }
     }
