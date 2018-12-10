@@ -7,6 +7,11 @@ namespace KoffieMachineDomain.Drinks.Decorators
     {
         private IDrink _nextDrink;
 
+        protected BaseDrinkDecorator(IDrink drink)
+        {
+            _nextDrink = drink;
+        }
+
         public double Price
         {
             get { return _nextDrink.Price; }

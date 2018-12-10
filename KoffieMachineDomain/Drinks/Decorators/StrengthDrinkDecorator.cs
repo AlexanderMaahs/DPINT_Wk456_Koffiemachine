@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KoffieMachineDomain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,12 @@ namespace KoffieMachineDomain.Drinks.Decorators
 {
     public class StrengthDrinkDecorator : BaseDrinkDecorator
     {
+
+        public StrengthDrinkDecorator(IDrink drink, ContainmentLevel strength) : base(drink)
+        {
+            DrinkStrength = strength;
+        }
+
         public override double GetPrice()
         {
             //Price += MILK_PRICE;

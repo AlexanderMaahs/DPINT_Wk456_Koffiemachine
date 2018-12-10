@@ -8,6 +8,6 @@ namespace KoffieMachineDomain.Enums
 {
     public enum ContainmentLevel
     {
-        Normal = 0, Min, Max
+        Normal = 0, Min, Max, None
     }
 }
