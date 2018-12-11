@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    class DrinkFactory
+    public class DrinkFactory
     {
         public IEnumerable<string> DrinkNames
         {
@@ -33,7 +33,7 @@ namespace KoffieMachineDomain.Drinks
             _drinks[WIENER_MELANGE] = new WienerMelangeDrink();
         }
 
-        public IDrink CreateCoffee(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
+        public IDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
         {
             IDrink drink = this.GetDrink(name);
             drink = AddSupplements(strength, milk, sugar, drink);
