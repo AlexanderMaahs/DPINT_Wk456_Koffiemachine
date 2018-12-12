@@ -1,6 +1,7 @@
 ﻿using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,7 +10,14 @@ namespace KoffieMachineDomain.Drinks.Decorators
 {
     public class SugarDrinkDecorator : BaseDrinkDecorator
     {
-        private const double SUGAR_PRICE = 0.1;
+        public static readonly double SUGAR_PRICE = 0.1;
+
+        private ContainmentLevel _sugarAmount;
+        public ContainmentLevel SugarAmount
+        {
+            get { return _sugarAmount; }
+            set { _sugarAmount = value; }
+        }
 
         public SugarDrinkDecorator(IDrink drink, ContainmentLevel sugar) : base(drink)
         {
@@ -20,6 +28,12 @@ namespace KoffieMachineDomain.Drinks.Decorators
         {
             Price += SUGAR_PRICE;
             return base.GetPrice();
+        }
+
+        public override void LogDrinkMaking(ObservableCollection<string> logText)
+        {
+            logText.Add($"Setting sugar amount to {SugarAmount}");
+            base.LogDrinkMaking(logText);
         }
     }
 }

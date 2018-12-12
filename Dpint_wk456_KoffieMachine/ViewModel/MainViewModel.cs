@@ -2,6 +2,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using KoffieMachineDomain;
 using KoffieMachineDomain.Drinks;
+using KoffieMachineDomain.Drinks.Decorators;
 using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
@@ -142,103 +143,53 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         public ICommand DrinkCommand => new RelayCommand<string>((drinkName) =>
         {
             _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, ContainmentLevel.None);
-            //_selectedDrink = null;
-            //switch (drinkName)
-            //{
-            //    case "Coffee":
-            //        _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength };
-            //        break;
-            //    case "Espresso":
-            //        _selectedDrink = new EspressoDrink();
-            //        break;
-            //    case "Capuccino":
-            //        _selectedDrink = new CapuccinoDrink();
-            //        break;
-            //    case "Wiener Melange":
-            //        _selectedDrink = new WienerMelangeDrink();
-            //        break;
-            //    case "Café au Lait":
-            //        _selectedDrink = new CafeAuLaitDrink();
-            //        break;
-            //    default:
-            //        LogText.Add($"Could not make {drinkName}, recipe not found.");
-            //        break;
-            //}
-            UpdateCoffeeInfo();
+            UpdateDrinkInfo(false, false);
         });
 
         public ICommand DrinkWithSugarCommand => new RelayCommand<string>((drinkName) =>
         {
             _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, _sugarAmount);
-            //_selectedDrink = null;
-            //RemainingPriceToPay = 0;
-            //switch (drinkName)
-            //{
-            //    case "Coffee":
-            //        _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount };
-            //        break;
-            //    case "Espresso":
-            //        _selectedDrink = new EspressoDrink() { HasSugar = true, SugarAmount = SugarAmount };
-            //        break;
-            //    case "Capuccino":
-            //        _selectedDrink = new CapuccinoDrink() { HasSugar = true, SugarAmount = SugarAmount };
-            //        break;
-            //    case "Wiener Melange":
-            //        _selectedDrink = new WienerMelangeDrink() { HasSugar = true, SugarAmount = SugarAmount };
-            //        break;
-            //    default:
-            //        LogText.Add($"Could not make {drinkName} with sugar, recipe not found.");
-            //        break;
-            //}
-            UpdateCoffeeInfo();
+            UpdateDrinkInfo(true, false);
         });
 
         public ICommand DrinkWithMilkCommand => new RelayCommand<string>((drinkName) =>
         {
             _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, ContainmentLevel.None);
-
-            //switch (drinkName)
-            //{
-            //    case "Coffee":
-            //        _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasMilk = true, MilkAmount = MilkAmount };
-            //        break;
-            //    case "Espresso":
-            //        _selectedDrink = new EspressoDrink() { HasMilk = true, MilkAmount = MilkAmount };
-            //        break;
-            //    default:
-            //        LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
-            //        break;
-            //}
-            UpdateCoffeeInfo();
+            UpdateDrinkInfo(false, true);
         });
 
         public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
         {
             _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, _sugarAmount);
-
-            //_selectedDrink = null;
-            //RemainingPriceToPay = 0;
-            //switch (drinkName)
-            //{
-            //    case "Coffee":
-            //        _selectedDrink = new CoffeeDrink() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-            //        break;
-            //    case "Espresso":
-            //        _selectedDrink = new EspressoDrink() { HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-            //        break;
-            //    default:
-            //        LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
-            //        break;
-            //}
-            UpdateCoffeeInfo();
+            UpdateDrinkInfo(true, true);
         });
 
-        private void UpdateCoffeeInfo()
+        private void UpdateDrinkInfo(bool hasSugar, bool hasMilk)
         {
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.SugarPrice + Drink.MilkPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
+                if (hasSugar)
+                {
+                    if (hasMilk)
+                    {
+                        RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE + MilkDrinkDecorator.MILK_PRICE;
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
+                    }
+                    else
+                    {
+                        RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE;
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: {RemainingPriceToPay}");
+                    }
+                } else if (hasMilk)
+                {
+                    RemainingPriceToPay = _selectedDrink.GetPrice() + MilkDrinkDecorator.MILK_PRICE;
+                    LogText.Add($"Selected {_selectedDrink.Name} with milk, price: {RemainingPriceToPay}");
+                }
+                else
+                {
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {_selectedDrink.Name}, price: {RemainingPriceToPay}");
+                }
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);

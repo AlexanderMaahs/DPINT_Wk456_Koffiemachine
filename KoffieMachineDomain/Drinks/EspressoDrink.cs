@@ -13,6 +13,8 @@ namespace KoffieMachineDomain.Drinks
         public virtual bool HasSugar { get; set; }
         public virtual bool HasMilk { get; set; }
 
+        private const double ESPRESSO_PRICE_MODIFIER = 0.7;
+
         public EspressoDrink()
         {
             Name = "Espresso";
@@ -20,7 +22,7 @@ namespace KoffieMachineDomain.Drinks
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice + 0.7;
+            return BaseDrinkPrice + ESPRESSO_PRICE_MODIFIER;
         }
 
         public override void LogDrinkMaking(ObservableCollection<string> log)

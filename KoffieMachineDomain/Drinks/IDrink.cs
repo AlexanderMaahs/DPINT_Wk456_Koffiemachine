@@ -13,11 +13,6 @@ namespace KoffieMachineDomain.Drinks
         string Name { get; set; }
         double Price { get; set; }
 
-        ContainmentLevel SugarAmount { get; set; }
-        ContainmentLevel MilkAmount { get; set; }
-        ContainmentLevel DrinkStrength { get; set; }
-
-
         double GetPrice();
         void LogDrinkMaking(ObservableCollection<string> logText);
     }

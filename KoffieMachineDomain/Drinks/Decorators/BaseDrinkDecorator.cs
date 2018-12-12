@@ -5,7 +5,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
 {
     public abstract class BaseDrinkDecorator : IDrink
     {
-        private IDrink _nextDrink;
+        protected IDrink _nextDrink;
 
         protected BaseDrinkDecorator(IDrink drink)
         {
@@ -23,28 +23,13 @@ namespace KoffieMachineDomain.Drinks.Decorators
             get { return _nextDrink.Name; }
             set { _nextDrink.Name = value; }
         }
-        public ContainmentLevel SugarAmount
-        {
-            get { return _nextDrink.SugarAmount; }
-            set { _nextDrink.SugarAmount = value; }
-        }
-        public ContainmentLevel MilkAmount
-        {
-            get { return _nextDrink.MilkAmount; }
-            set { _nextDrink.MilkAmount = value; }
-        }
-        public ContainmentLevel DrinkStrength
-        {
-            get { return _nextDrink.DrinkStrength; }
-            set { _nextDrink.DrinkStrength = value; }
-        }
 
         public virtual double GetPrice()
         {
             return _nextDrink.GetPrice();
         }
 
-        public void LogDrinkMaking(ObservableCollection<string> logText)
+        public virtual void LogDrinkMaking(ObservableCollection<string> logText)
         {
             _nextDrink.LogDrinkMaking(logText);
         }
