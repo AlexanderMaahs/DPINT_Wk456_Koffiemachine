@@ -14,8 +14,13 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
+        private IDrink _selectedDrink;
+
         private BalanceFactory _balanceFactory;
+
         public ObservableCollection<string> LogText { get; private set; }
+        public ObservableCollection<string> PaymentCardUsernames { get; set; }
+
 
         public MainViewModel()
         {
@@ -38,7 +43,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         }
 
         #region Drink properties to bind to
-        private IDrink _selectedDrink;
         public string SelectedDrinkName
         {
             get { return _selectedDrink?.Name; }
@@ -51,52 +55,56 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #endregion Drink properties to bind to
 
         #region Payment
+        public double PaymentCardRemainingAmount => _balanceFactory.GetBalance(SelectedPaymentCardUsername);
+
         public RelayCommand PayByCardCommand => new RelayCommand(() =>
         {
-            PayDrink(payWithCard: true);
+            PayByCard();
         });
+
+        private double _remainingPriceToPay;
+        public double RemainingPriceToPay
+        {
+            get { return _remainingPriceToPay; }
+            set { _remainingPriceToPay = value; RaisePropertyChanged(() => RemainingPriceToPay); }
+        }
 
         public ICommand PayByCoinCommand => new RelayCommand<double>(coinValue =>
         {
-            PayDrink(payWithCard: false, insertedMoney: coinValue);
+            PayByCoin(coinValue);
         });
 
-        private void PayDrink(bool payWithCard, double insertedMoney = 0)
+        private void PayByCard()
         {
-            if (_selectedDrink != null && payWithCard)
-            {
-                insertedMoney = _balanceFactory.GetBalance(SelectedPaymentCardUsername);
-                if (RemainingPriceToPay <= insertedMoney)
-                {
-                    _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
-                    RemainingPriceToPay = 0;
-                }
-                else // Pay what you can, fill up with coins later.
-                {
-                    _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
+            if (_selectedDrink == null)
+                return;
 
-                    RemainingPriceToPay -= insertedMoney;
-                }
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
-                RaisePropertyChanged(() => PaymentCardRemainingAmount);
-            }
-            else if (_selectedDrink != null && !payWithCard)
+            double insertedMoney = PaymentCardRemainingAmount;
+            if (RemainingPriceToPay <= insertedMoney) // All payed with card
             {
-                RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
+                _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
+                RemainingPriceToPay = 0;
             }
+            else
+            {
+                _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
+                RemainingPriceToPay -= insertedMoney;
+            }
+            RaisePropertyChanged(() => PaymentCardRemainingAmount);
+            LogText.Add($"Inserted €{insertedMoney.ToString()}, Remaining: €{RemainingPriceToPay.ToString()}.");
 
-            if (_selectedDrink != null && RemainingPriceToPay == 0)
-            {
-                _selectedDrink.LogDrinkMaking(LogText);
-                LogText.Add("------------------");
-                _selectedDrink = null;
-            }
+            if (RemainingPriceToPay == 0)
+                CreateDrink();
         }
 
-        public double PaymentCardRemainingAmount => _balanceFactory.GetBalance(SelectedPaymentCardUsername);
+        private void PayByCoin(double insertedMoney)
+        {
+            if (_selectedDrink == null)
+                return;
+            RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
+            LogText.Add($"Inserted €{insertedMoney.ToString()}, Remaining: €{RemainingPriceToPay.ToString()}.");
+        }
 
-        public ObservableCollection<string> PaymentCardUsernames { get; set; }
         private string _selectedPaymentCardUsername;
         public string SelectedPaymentCardUsername
         {
@@ -108,17 +116,18 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 RaisePropertyChanged(() => PaymentCardRemainingAmount);
             }
         }
-
-        private DrinkFactory _drinkFactory;
-        private double _remainingPriceToPay;
-        public double RemainingPriceToPay
+        private void CreateDrink()
         {
-            get { return _remainingPriceToPay; }
-            set { _remainingPriceToPay = value; RaisePropertyChanged(() => RemainingPriceToPay); }
+            _selectedDrink.LogDrinkMaking(LogText);
+            LogText.Add("------------------");
+            _selectedDrink = null;
         }
         #endregion Payment
 
         #region Coffee buttons
+
+        private DrinkFactory _drinkFactory;
+        
         private ContainmentLevel _coffeeStrength;
         public ContainmentLevel CoffeeStrength
         {
@@ -173,22 +182,23 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                     if (hasMilk)
                     {
                         RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE + MilkDrinkDecorator.MILK_PRICE;
-                        LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: €{RemainingPriceToPay}");
                     }
                     else
                     {
                         RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE;
-                        LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: {RemainingPriceToPay}");
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: €{RemainingPriceToPay}");
                     }
-                } else if (hasMilk)
+                }
+                else if (hasMilk)
                 {
                     RemainingPriceToPay = _selectedDrink.GetPrice() + MilkDrinkDecorator.MILK_PRICE;
-                    LogText.Add($"Selected {_selectedDrink.Name} with milk, price: {RemainingPriceToPay}");
+                    LogText.Add($"Selected {_selectedDrink.Name} with milk, price: €{RemainingPriceToPay}");
                 }
                 else
                 {
                     RemainingPriceToPay = _selectedDrink.GetPrice();
-                    LogText.Add($"Selected {_selectedDrink.Name}, price: {RemainingPriceToPay}");
+                    LogText.Add($"Selected {_selectedDrink.Name}, price: €{RemainingPriceToPay}");
                 }
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
