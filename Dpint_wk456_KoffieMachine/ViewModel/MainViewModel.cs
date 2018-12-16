@@ -21,9 +21,13 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         public ObservableCollection<string> LogText { get; private set; }
         public ObservableCollection<string> PaymentCardUsernames { get; set; }
 
+        public ObservableCollection<string> TeaNames { get; set; }
+        public string SelectedTeaName { get; set; }
 
         public MainViewModel()
         {
+            _drinkFactory = new DrinkFactory();
+
             // Init values
             _coffeeStrength = ContainmentLevel.Normal;
             _sugarAmount = ContainmentLevel.Normal;
@@ -39,7 +43,10 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             PaymentCardUsernames = new ObservableCollection<string>(_balanceFactory.Users);
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
 
-            _drinkFactory = new DrinkFactory();
+            //Tea
+            TeaNames = new ObservableCollection<string>(_drinkFactory.BlendRepo.BlendNames);
+            SelectedTeaName = TeaNames[0];
+
         }
 
         #region Drink properties to bind to

@@ -10,7 +10,7 @@ namespace KoffieMachineDomain.Drinks
 {
     public class DrinkFactory
     {
-        private TeaBlendRepository _blendRepo;
+        public TeaBlendRepository BlendRepo { get; set; }
 
         public IEnumerable<string> DrinkNames
         {
@@ -29,7 +29,7 @@ namespace KoffieMachineDomain.Drinks
 
         public DrinkFactory()
         {
-            _blendRepo = new TeaBlendRepository();
+            BlendRepo = new TeaBlendRepository();
 
             _drinks = new Dictionary<string, BaseDrink>();
             _drinks[CAFE_AU_LAIT] = new CafeAuLaitDrink();
@@ -54,7 +54,7 @@ namespace KoffieMachineDomain.Drinks
             _drinks.TryGetValue(name, out baseDrink);
             if (baseDrink == null)
             {
-                TeaBlend teaBlend = _blendRepo.GetTeaBlend(name);
+                TeaBlend teaBlend = BlendRepo.GetTeaBlend(name);
                 if (teaBlend == null)
                     throw new InvalidOperationException("Provided drink does not exist");
                 baseDrink = new TeaAdapter(teaBlend);
