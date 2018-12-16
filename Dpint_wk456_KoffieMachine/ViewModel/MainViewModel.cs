@@ -184,6 +184,18 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             UpdateDrinkInfo(true, true);
         });
 
+        public ICommand TeaCommand =>new RelayCommand(()=>
+        {
+            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, ContainmentLevel.None, ContainmentLevel.None);
+            UpdateDrinkInfo(false, false);
+        });
+
+        public ICommand TeaWithSugarCommand => new RelayCommand(() =>
+        {
+            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, _sugarAmount, ContainmentLevel.None);
+            UpdateDrinkInfo(true, false);
+        });
+
         private void UpdateDrinkInfo(bool hasSugar, bool hasMilk)
         {
             if (_selectedDrink != null)

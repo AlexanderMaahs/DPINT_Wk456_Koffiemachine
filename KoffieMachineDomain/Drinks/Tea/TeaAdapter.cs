@@ -23,20 +23,9 @@ namespace KoffieMachineDomain.Drinks
             set { _adaptee.Blend.Name = value; }
         }
 
-        public override double Price
-        {
-            get { return _adaptee.Price; }
-            set { _adaptee.Price = (float)value; }
-        }
-
         public override double GetPrice()
         {
-            return Price;
-        }
-
-        public override void LogDrinkMaking(ObservableCollection<string> logText)
-        {
-            base.LogDrinkMaking(logText);
+            return base.GetPrice() + _adaptee.Price;
         }
     }
 }

@@ -102,7 +102,7 @@
             </StackPanel>
             <Separator />
             <Label Content="Specialties" FontWeight="Bold"/>
-            <StackPanel Orientation="Horizontal" Name="SpecialtiesPanel" HorizontalAlignment="Center" Margin="5">
+            <StackPanel Orientation="Horizontal" Name="SpecialtiesPanelTop" HorizontalAlignment="Center" Margin="5">
                 <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
                     <TextBlock>Capuccino</TextBlock>
                 </Button>
@@ -114,6 +114,17 @@
                 </Button>
                 <Button Command="{Binding DrinkCommand}" CommandParameter="Café au Lait" Style="{StaticResource DrinkButton}">
                     <TextBlock>Café au Lait</TextBlock>
+                </Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" Name="SpecialtiesPanelBottom" HorizontalAlignment="Center" Margin="5">
+                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Irish Coffee" Style="{StaticResource DrinkButton}">
+                    <TextBlock>Irish Coffee</TextBlock>
+                </Button>
+                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Spanish Coffee" Style="{StaticResource DrinkButton}">
+                    <TextBlock>Spanish Coffee</TextBlock>
+                </Button>
+                <Button Command="{Binding DrinkCommand}" CommandParameter="Italian Coffee" Style="{StaticResource DrinkButton}">
+                    <TextBlock>Italian Coffee</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
@@ -129,10 +140,10 @@
             <Separator />
             <Label Content="Tea" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="TeaPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Tea" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding TeaCommand}" Style="{StaticResource DrinkButton}">
                     <TextBlock>Tea</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Tea" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding TeaWithSugarCommand}" Style="{StaticResource DrinkButton}">
                     <TextBlock>Tea + sugar</TextBlock>
                 </Button>
                 <ComboBox ItemsSource="{Binding TeaNames}" SelectedValue="{Binding SelectedTeaName}" />
