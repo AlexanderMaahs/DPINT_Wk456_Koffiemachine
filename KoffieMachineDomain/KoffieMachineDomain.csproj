@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,7 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drinks\BaseDrink.cs" />
+    <Compile Include="Drinks\ChaiTeaBlend.cs" />
     <Compile Include="Drinks\Decorators\DeluxeDecorator.cs" />
+    <Compile Include="Drinks\EarlGreyTeaBlend.cs" />
+    <Compile Include="Drinks\GoldTeaBlend.cs" />
     <Compile Include="Drinks\HotChocolate.cs" />
     <Compile Include="Drinks\Decorators\BaseDrinkDecorator.cs" />
     <Compile Include="Drinks\Decorators\MilkDrinkDecorator.cs" />
@@ -50,6 +54,10 @@
     <Compile Include="Drinks\DrinkFactory.cs" />
     <Compile Include="Drinks\HotChocolateAdapter.cs" />
     <Compile Include="Drinks\HotChocolateDeluxeAdapter.cs" />
+    <Compile Include="Drinks\Tea.cs" />
+    <Compile Include="Drinks\TeaAdapter.cs" />
+    <Compile Include="Drinks\TeaBlend.cs" />
+    <Compile Include="Drinks\TeaBlendRepository.cs" />
     <Compile Include="Enums\ContainmentLevel.cs" />
     <Compile Include="Drinks\CafeAuLaitDrink.cs" />
     <Compile Include="Drinks\CapuccinoDrink.cs" />
