@@ -19,7 +19,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
             set { _sugarAmount = value; }
         }
 
-        public SugarDrinkDecorator(IDrink drink, ContainmentLevel sugar) : base(drink)
+        public SugarDrinkDecorator(BaseDrink drink, ContainmentLevel sugar) : base(drink)
         {
             SugarAmount = sugar;
         }

@@ -14,7 +14,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private IDrink _selectedDrink;
+        private BaseDrink _selectedDrink;
 
         private BalanceFactory _balanceFactory;
 

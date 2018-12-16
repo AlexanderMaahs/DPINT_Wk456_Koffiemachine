@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class CafeAuLaitDrink : CaffeineDrink
+    public class CafeAuLaitDrink : BaseDrink
     {
         private const double CAFEAULAIT_PRICE = 0.5;
 
@@ -18,7 +18,7 @@ namespace KoffieMachineDomain.Drinks
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice + CAFEAULAIT_PRICE;
+            return base.GetPrice() + CAFEAULAIT_PRICE;
         }
 
         public override void LogDrinkMaking(ObservableCollection<string> log)

@@ -23,11 +23,11 @@ namespace KoffieMachineDomain.Drinks
         public const string CHOCOLATE = "Chocolate";
         public const string CHOCOLATE_DELUXE = "Chocolate Deluxe";
 
-        private Dictionary<string, IDrink> _drinks;
+        private Dictionary<string, BaseDrink> _drinks;
 
         public DrinkFactory()
         {
-            _drinks = new Dictionary<string, IDrink>();
+            _drinks = new Dictionary<string, BaseDrink>();
             _drinks[CAFE_AU_LAIT] = new CafeAuLaitDrink();
             _drinks[CAPUCCINO] = new CapuccinoDrink();
             _drinks[COFFEE] = new CoffeeDrink();
@@ -37,23 +37,23 @@ namespace KoffieMachineDomain.Drinks
             _drinks[CHOCOLATE_DELUXE] = new DeluxeDecorator(new HotChocolate());
         }
 
-        public IDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
+        public BaseDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
         {
-            IDrink drink = this.GetDrink(name);
+            BaseDrink drink = this.GetDrink(name);
             drink = AddSupplements(strength, milk, sugar, drink);
                 return drink;
         }
 
-        private IDrink GetDrink(string name)
+        private BaseDrink GetDrink(string name)
         {
-            IDrink baseDrink = null;
+            BaseDrink baseDrink = null;
             _drinks.TryGetValue(name, out baseDrink);
             if (baseDrink == null)
                 throw new InvalidOperationException("Provided drink name does not exist");
             return baseDrink;
         }
 
-        private IDrink AddSupplements(ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar, IDrink drink)
+        private BaseDrink AddSupplements(ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar, BaseDrink drink)
         {
             if(strength != ContainmentLevel.None)
                 drink = new StrengthDrinkDecorator(drink, strength);

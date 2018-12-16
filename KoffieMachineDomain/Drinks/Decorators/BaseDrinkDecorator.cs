@@ -3,33 +3,33 @@ using KoffieMachineDomain.Enums;
 
 namespace KoffieMachineDomain.Drinks.Decorators
 {
-    public abstract class BaseDrinkDecorator : IDrink
+    public abstract class BaseDrinkDecorator : BaseDrink
     {
-        protected IDrink _nextDrink;
+        protected BaseDrink _nextDrink;
 
-        protected BaseDrinkDecorator(IDrink drink)
+        protected BaseDrinkDecorator(BaseDrink drink)
         {
             _nextDrink = drink;
         }
 
-        public double Price
+        public override double Price
         {
             get { return _nextDrink.Price; }
             set { _nextDrink.Price = value; }
         }
 
-        public string Name
+        public override string Name
         {
             get { return _nextDrink.Name; }
             set { _nextDrink.Name = value; }
         }
 
-        public virtual double GetPrice()
+        public override double GetPrice()
         {
             return _nextDrink.GetPrice();
         }
 
-        public virtual void LogDrinkMaking(ObservableCollection<string> logText)
+        public override void LogDrinkMaking(ObservableCollection<string> logText)
         {
             _nextDrink.LogDrinkMaking(logText);
         }

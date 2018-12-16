@@ -4,25 +4,19 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using KoffieMachineDomain.Enums;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public abstract class CaffeineDrink : IDrink
+    public class BaseDrink
     {
-        protected double _price;
+        public virtual string Name { get; set; }
+        public virtual double Price { get; set; }
 
-        protected const double BaseDrinkPrice = 1.0;
-
-        public string Name { get; set; }
-        public double Price { get; set; }
-        public ContainmentLevel SugarAmount { get; set; }
-        public ContainmentLevel MilkAmount { get; set; }
-        public ContainmentLevel DrinkStrength { get; set; }
+        protected const double BASE_PRICE = 1;
 
         public virtual double GetPrice()
         {
-            return _price;
+            return BASE_PRICE;
         }
 
         public virtual void LogDrinkMaking(ObservableCollection<string> logText)

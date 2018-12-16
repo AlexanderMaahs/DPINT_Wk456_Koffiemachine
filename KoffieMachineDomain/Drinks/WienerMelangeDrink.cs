@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class WienerMelangeDrink : CapuccinoDrink
+    public class WienerMelangeDrink : BaseDrink
     {
         private const double WIENERMELANGE_PRICE_MODIFIER = 2;
 
@@ -18,7 +18,7 @@ namespace KoffieMachineDomain.Drinks
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice * WIENERMELANGE_PRICE_MODIFIER;
+            return base.GetPrice() * WIENERMELANGE_PRICE_MODIFIER;
         }
     }
 }

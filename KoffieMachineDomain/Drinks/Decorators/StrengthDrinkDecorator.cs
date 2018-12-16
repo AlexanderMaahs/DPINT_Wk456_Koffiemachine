@@ -17,7 +17,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
             set { _drinkStrength = value; }
         }
 
-        public StrengthDrinkDecorator(IDrink drink, ContainmentLevel strength) : base(drink)
+        public StrengthDrinkDecorator(BaseDrink drink, ContainmentLevel strength) : base(drink)
         {
             DrinkStrength = strength;
         }

@@ -11,7 +11,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
     {
         public static readonly double DELUXE_PRICE = 0.5;
 
-        public DeluxeDecorator(IDrink drink) : base(drink)
+        public DeluxeDecorator(BaseDrink drink) : base(drink)
         {
             _nextDrink.Name += " Deluxe";
         }

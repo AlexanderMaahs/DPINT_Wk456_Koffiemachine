@@ -3,10 +3,8 @@ using KoffieMachineDomain.Enums;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class HotChocolate : IDrink
+    public class HotChocolate : BaseDrink
     {
-        public string Name { get; set; }
-        public double Price { get; set; }
 
         protected const double BaseDrinkPrice = 1.5;
 
@@ -15,12 +13,12 @@ namespace KoffieMachineDomain.Drinks
             Name = "Chocolate";
         }
 
-        public double GetPrice()
+        public override double GetPrice()
         {
-            return BaseDrinkPrice;
+            return base.GetPrice();
         }
 
-        public virtual void LogDrinkMaking(ObservableCollection<string> logText)
+        public override void LogDrinkMaking(ObservableCollection<string> logText)
         {
             logText.Add($"Making {Name}...");
             logText.Add($"Heating up...");

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class CoffeeDrink : CaffeineDrink
+    public class CoffeeDrink : BaseDrink
     {
 
         public virtual bool HasSugar { get; set; }
@@ -21,7 +21,7 @@ namespace KoffieMachineDomain.Drinks
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice;
+            return base.GetPrice();
         }
 
     }
