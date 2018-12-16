@@ -33,8 +33,8 @@ namespace KoffieMachineDomain.Drinks
             _drinks[COFFEE] = new CoffeeDrink();
             _drinks[ESPRESSO] = new EspressoDrink();
             _drinks[WIENER_MELANGE] = new WienerMelangeDrink();
-            _drinks[CHOCOLATE] = new HotChocolate();
-            _drinks[CHOCOLATE_DELUXE] = new DeluxeDecorator(new HotChocolate());
+            _drinks[CHOCOLATE] = new HotChocolateAdapter();
+            _drinks[CHOCOLATE_DELUXE] = new HotChocolateDeluxeAdapter();
         }
 
         public BaseDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)

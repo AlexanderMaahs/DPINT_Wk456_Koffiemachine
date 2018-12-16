@@ -1,27 +1,34 @@
-﻿using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using KoffieMachineDomain.Enums;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class HotChocolate : BaseDrink
+    public class HotChocolate
     {
+        private bool _isDeluxe;
 
-        protected const double BaseDrinkPrice = 1.5;
-
-        public HotChocolate()
+        public double Cost()
         {
-            Name = "Chocolate";
+            if (_isDeluxe)
+                return 2.5;
+            return 2;
+        }
+        public IEnumerable<string> GetBuildingSteps()
+        {
+            return null;
         }
 
-        public override double GetPrice()
+        public string GetNameOfDrink()
         {
-            return base.GetPrice();
+            if (_isDeluxe)
+                return "Chocolate Deluxe";
+            return "Chocolate";
         }
 
-        public override void LogDrinkMaking(ObservableCollection<string> logText)
+        public void MakeDeluxe()
         {
-            logText.Add($"Making {Name}...");
-            logText.Add($"Heating up...");
+            _isDeluxe = true;
         }
     }
 }
