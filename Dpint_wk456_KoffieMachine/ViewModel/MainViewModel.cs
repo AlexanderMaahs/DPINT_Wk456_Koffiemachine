@@ -103,6 +103,9 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 return;
             RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
             LogText.Add($"Inserted €{insertedMoney.ToString()}, Remaining: €{RemainingPriceToPay.ToString()}.");
+
+            if (RemainingPriceToPay == 0)
+                CreateDrink();
         }
 
         private string _selectedPaymentCardUsername;

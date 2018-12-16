@@ -12,9 +12,6 @@ namespace KoffieMachineDomain.Drinks
     {
         protected double _price;
 
-        public static readonly double SugarPrice = 0.1;
-        public static readonly double MilkPrice = 0.15;
-
         protected const double BaseDrinkPrice = 1.0;
 
         public string Name { get; set; }
