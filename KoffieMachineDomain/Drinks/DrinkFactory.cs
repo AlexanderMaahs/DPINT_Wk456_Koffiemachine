@@ -20,6 +20,8 @@ namespace KoffieMachineDomain.Drinks
         public const string COFFEE = "Coffee";
         public const string ESPRESSO = "Espresso";
         public const string WIENER_MELANGE = "Wiener Melange";
+        public const string CHOCOLATE = "Chocolate";
+        public const string CHOCOLATE_DELUXE = "Chocolate Deluxe";
 
         private Dictionary<string, IDrink> _drinks;
 
@@ -31,6 +33,8 @@ namespace KoffieMachineDomain.Drinks
             _drinks[COFFEE] = new CoffeeDrink();
             _drinks[ESPRESSO] = new EspressoDrink();
             _drinks[WIENER_MELANGE] = new WienerMelangeDrink();
+            _drinks[CHOCOLATE] = new HotChocolate();
+            _drinks[CHOCOLATE_DELUXE] = new HotChocolateDeluxeDecorator(new HotChocolate());
         }
 
         public IDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
@@ -39,7 +43,6 @@ namespace KoffieMachineDomain.Drinks
             drink = AddSupplements(strength, milk, sugar, drink);
             return drink;
         }
-
 
         private IDrink GetDrink(string name)
         {

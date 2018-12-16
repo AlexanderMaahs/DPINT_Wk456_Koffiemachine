@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class CafeAuLaitDrink : Drink
+    public class CafeAuLaitDrink : CaffeineDrink
     {
         public CafeAuLaitDrink()
         {

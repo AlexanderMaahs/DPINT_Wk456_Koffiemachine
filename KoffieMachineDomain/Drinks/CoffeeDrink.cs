@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class CoffeeDrink : Drink
+    public class CoffeeDrink : CaffeineDrink
     {
 
         public virtual bool HasSugar { get; set; }

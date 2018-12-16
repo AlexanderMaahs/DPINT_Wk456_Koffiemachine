@@ -8,7 +8,7 @@ using KoffieMachineDomain.Enums;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public abstract class Drink : IDrink
+    public abstract class CaffeineDrink : IDrink
     {
         protected double _price;
 

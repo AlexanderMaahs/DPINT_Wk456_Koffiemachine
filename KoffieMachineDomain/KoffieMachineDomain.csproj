@@ -40,6 +40,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drinks\Decorators\HotChocolateDeluxeDecorator.cs" />
+    <Compile Include="Drinks\HotChocolate.cs" />
     <Compile Include="Drinks\Decorators\BaseDrinkDecorator.cs" />
     <Compile Include="Drinks\Decorators\MilkDrinkDecorator.cs" />
     <Compile Include="Drinks\Decorators\StrengthDrinkDecorator.cs" />
@@ -49,7 +51,7 @@
     <Compile Include="Drinks\CafeAuLaitDrink.cs" />
     <Compile Include="Drinks\CapuccinoDrink.cs" />
     <Compile Include="Drinks\CoffeeDrink.cs" />
-    <Compile Include="Drinks\Drink.cs" />
+    <Compile Include="Drinks\CaffeineDrink.cs" />
     <Compile Include="Drinks\EspressoDrink.cs" />
     <Compile Include="Drinks\IDrink.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
