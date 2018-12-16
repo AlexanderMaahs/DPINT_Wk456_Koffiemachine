@@ -25,6 +25,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
         public override void LogDrinkMaking(ObservableCollection<string> logText)
         {
             logText.Add($"Setting drink strength to {DrinkStrength}");
+            logText.Add("Filling with coffee...");
             base.LogDrinkMaking(logText);
         }
     }

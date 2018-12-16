@@ -9,14 +9,16 @@ namespace KoffieMachineDomain.Drinks
 {
     public class CafeAuLaitDrink : CaffeineDrink
     {
-        public CafeAuLaitDrink()
+        private const double CAFEAULAIT_PRICE = 0.5;
+
+        public CafeAuLaitDrink() : base()
         {
             Name = "Café au Lait";
         }
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice + 0.5;
+            return BaseDrinkPrice + CAFEAULAIT_PRICE;
         }
 
         public override void LogDrinkMaking(ObservableCollection<string> log)
@@ -24,7 +26,6 @@ namespace KoffieMachineDomain.Drinks
             base.LogDrinkMaking(log);
             log.Add("Filling half with coffee...");
             log.Add("Filling other half with milk...");
-            log.Add($"Finished making {Name}");
         }
     }
 }

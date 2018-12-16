@@ -34,14 +34,14 @@ namespace KoffieMachineDomain.Drinks
             _drinks[ESPRESSO] = new EspressoDrink();
             _drinks[WIENER_MELANGE] = new WienerMelangeDrink();
             _drinks[CHOCOLATE] = new HotChocolate();
-            _drinks[CHOCOLATE_DELUXE] = new HotChocolateDeluxeDecorator(new HotChocolate());
+            _drinks[CHOCOLATE_DELUXE] = new DeluxeDecorator(new HotChocolate());
         }
 
         public IDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
         {
             IDrink drink = this.GetDrink(name);
             drink = AddSupplements(strength, milk, sugar, drink);
-            return drink;
+                return drink;
         }
 
         private IDrink GetDrink(string name)
@@ -55,9 +55,12 @@ namespace KoffieMachineDomain.Drinks
 
         private IDrink AddSupplements(ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar, IDrink drink)
         {
-            drink = new StrengthDrinkDecorator(drink, strength);
-            drink = new MilkDrinkDecorator(drink, milk);
-            drink = new SugarDrinkDecorator(drink, sugar);
+            if(strength != ContainmentLevel.None)
+                drink = new StrengthDrinkDecorator(drink, strength);
+            if (milk != ContainmentLevel.None)
+                drink = new MilkDrinkDecorator(drink, milk);
+            if (sugar != ContainmentLevel.None)
+                drink = new SugarDrinkDecorator(drink, sugar);
             return drink;
         }
 

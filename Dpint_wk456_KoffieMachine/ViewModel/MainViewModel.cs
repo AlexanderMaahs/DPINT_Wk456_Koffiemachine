@@ -122,6 +122,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         private void CreateDrink()
         {
             _selectedDrink.LogDrinkMaking(LogText);
+            LogText.Add($"Finished making {_selectedDrink.Name}");
             LogText.Add("------------------");
             _selectedDrink = null;
         }

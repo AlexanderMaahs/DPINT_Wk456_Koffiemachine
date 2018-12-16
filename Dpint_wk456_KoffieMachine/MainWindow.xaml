@@ -103,10 +103,10 @@
             <Separator />
             <Label Content="Specialties" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="SpecialtiesPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
                     <TextBlock>Capuccino</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
                     <TextBlock>Capuccino + sugar</TextBlock>
                 </Button>
                 <Button Command="{Binding DrinkCommand}" CommandParameter="Wiener Melange" Style="{StaticResource DrinkButton}">

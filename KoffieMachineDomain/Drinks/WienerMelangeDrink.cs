@@ -9,16 +9,16 @@ namespace KoffieMachineDomain.Drinks
 {
     public class WienerMelangeDrink : CapuccinoDrink
     {
+        private const double WIENERMELANGE_PRICE_MODIFIER = 2;
+
         public WienerMelangeDrink()
         {
             Name = "Wiener Melange";
-            HasSugar = false;
-            DrinkStrength = ContainmentLevel.Min;
         }
 
         public override double GetPrice()
         {
-            return BaseDrinkPrice * 2;
+            return BaseDrinkPrice * WIENERMELANGE_PRICE_MODIFIER;
         }
     }
 }

@@ -7,23 +7,18 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks.Decorators
 {
-    public class HotChocolateDeluxeDecorator : BaseDrinkDecorator
+    public class DeluxeDecorator : BaseDrinkDecorator
     {
         public static readonly double DELUXE_PRICE = 0.5;
 
-        public HotChocolateDeluxeDecorator(IDrink drink) : base(drink)
+        public DeluxeDecorator(IDrink drink) : base(drink)
         {
+            _nextDrink.Name += " Deluxe";
         }
 
         public override double GetPrice()
         {
             return base.GetPrice() + DELUXE_PRICE;
-        }
-
-        public override void LogDrinkMaking(ObservableCollection<string> logText)
-        {
-            logText.Add($"Making {Name} Deluxe...");
-            logText.Add($"Heating up...");
         }
     }
 }

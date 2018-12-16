@@ -33,6 +33,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
         public override void LogDrinkMaking(ObservableCollection<string> logText)
         {
             logText.Add($"Setting milk amount to {MilkAmount}");
+            logText.Add("Adding milk...");
             base.LogDrinkMaking(logText);
         }
 
