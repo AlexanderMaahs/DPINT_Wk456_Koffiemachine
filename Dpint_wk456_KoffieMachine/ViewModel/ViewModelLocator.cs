@@ -9,16 +9,12 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         public ViewModelLocator()
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
-
             SimpleIoc.Default.Register<MainViewModel>();
         }
 
         public MainViewModel Main
         {
-            get
-            {
-                return ServiceLocator.Current.GetInstance<MainViewModel>();
-            }
+            get { return ServiceLocator.Current.GetInstance<MainViewModel>(); }
         }
     }
 }

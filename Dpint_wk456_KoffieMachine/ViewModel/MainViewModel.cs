@@ -1,6 +1,9 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using KoffieMachineDomain;
+using KoffieMachineDomain.Drinks;
+using KoffieMachineDomain.Drinks.Decorators;
+using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -11,30 +14,42 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        private Dictionary<string, double> _cashOnCards;
+        private BaseDrink _selectedDrink;
+
+        private BalanceFactory _balanceFactory;
+
         public ObservableCollection<string> LogText { get; private set; }
+        public ObservableCollection<string> PaymentCardUsernames { get; set; }
+
+        public ObservableCollection<string> TeaNames { get; set; }
+        public string SelectedTeaName { get; set; }
 
         public MainViewModel()
         {
-            _coffeeStrength = Strength.Normal;
-            _sugarAmount = Amount.Normal;
-            _milkAmount = Amount.Normal;
+            _drinkFactory = new DrinkFactory();
 
+            // Init values
+            _coffeeStrength = ContainmentLevel.Normal;
+            _sugarAmount = ContainmentLevel.Normal;
+            _milkAmount = ContainmentLevel.Normal;
+
+            //Log
             LogText = new ObservableCollection<string>();
             LogText.Add("Starting up...");
             LogText.Add("Done, what would you like to drink?");
 
-            _cashOnCards = new Dictionary<string, double>();
-            _cashOnCards["Arjen"] = 5.0;
-            _cashOnCards["Bert"] = 3.5;
-            _cashOnCards["Chris"] = 7.0;
-            _cashOnCards["Daan"] = 6.0;
-            PaymentCardUsernames = new ObservableCollection<string>(_cashOnCards.Keys);
+            //Payment
+            _balanceFactory = new BalanceFactory();
+            PaymentCardUsernames = new ObservableCollection<string>(_balanceFactory.Users);
             SelectedPaymentCardUsername = PaymentCardUsernames[0];
+
+            //Tea
+            TeaNames = new ObservableCollection<string>(_drinkFactory.BlendRepo.BlendNames);
+            SelectedTeaName = TeaNames[0];
+
         }
 
         #region Drink properties to bind to
-        private Drink _selectedDrink;
         public string SelectedDrinkName
         {
             get { return _selectedDrink?.Name; }
@@ -47,53 +62,59 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         #endregion Drink properties to bind to
 
         #region Payment
+        public double PaymentCardRemainingAmount => _balanceFactory.GetBalance(SelectedPaymentCardUsername);
+
         public RelayCommand PayByCardCommand => new RelayCommand(() =>
         {
-            PayDrink(payWithCard: true);
+            PayByCard();
         });
+
+        private double _remainingPriceToPay;
+        public double RemainingPriceToPay
+        {
+            get { return _remainingPriceToPay; }
+            set { _remainingPriceToPay = value; RaisePropertyChanged(() => RemainingPriceToPay); }
+        }
 
         public ICommand PayByCoinCommand => new RelayCommand<double>(coinValue =>
         {
-            PayDrink(payWithCard: false, insertedMoney: coinValue);
+            PayByCoin(coinValue);
         });
 
-        private void PayDrink(bool payWithCard, double insertedMoney = 0)
+        private void PayByCard()
         {
-            if (_selectedDrink != null && payWithCard)
-            {
-                insertedMoney = _cashOnCards[SelectedPaymentCardUsername];
-                if (RemainingPriceToPay <= insertedMoney)
-                {
-                    _cashOnCards[SelectedPaymentCardUsername] = insertedMoney - RemainingPriceToPay;
-                    RemainingPriceToPay = 0;
-                }
-                else // Pay what you can, fill up with coins later.
-                {
-                    _cashOnCards[SelectedPaymentCardUsername] = 0;
-                    
-                    RemainingPriceToPay -= insertedMoney;
-                }
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
-                RaisePropertyChanged(() => PaymentCardRemainingAmount);
-            }
-            else if (_selectedDrink != null && !payWithCard)
-            {
-                RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
-                LogText.Add($"Inserted {insertedMoney.ToString("C", CultureInfo.CurrentCulture)}, Remaining: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}.");
-            }
+            if (_selectedDrink == null)
+                return;
 
-            if (_selectedDrink != null && RemainingPriceToPay == 0)
+            double insertedMoney = PaymentCardRemainingAmount;
+            if (RemainingPriceToPay <= insertedMoney) // All payed with card
             {
-                _selectedDrink.LogDrinkMaking(LogText);
-                LogText.Add("------------------");
-                _selectedDrink = null;
+                _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, insertedMoney - RemainingPriceToPay);
+                RemainingPriceToPay = 0;
             }
+            else
+            {
+                _balanceFactory.UpdateBalance(SelectedPaymentCardUsername, 0);
+                RemainingPriceToPay -= insertedMoney;
+            }
+            RaisePropertyChanged(() => PaymentCardRemainingAmount);
+            LogText.Add($"Inserted €{insertedMoney.ToString()}, Remaining: €{RemainingPriceToPay.ToString()}.");
+
+            if (RemainingPriceToPay == 0)
+                CreateDrink();
         }
-        
 
-        public double PaymentCardRemainingAmount => _cashOnCards.ContainsKey(SelectedPaymentCardUsername ?? "") ? _cashOnCards[SelectedPaymentCardUsername] : 0;
+        private void PayByCoin(double insertedMoney)
+        {
+            if (_selectedDrink == null)
+                return;
+            RemainingPriceToPay = Math.Max(Math.Round(RemainingPriceToPay - insertedMoney, 2), 0);
+            LogText.Add($"Inserted €{insertedMoney.ToString()}, Remaining: €{RemainingPriceToPay.ToString()}.");
 
-        public ObservableCollection<string> PaymentCardUsernames { get; set; }
+            if (RemainingPriceToPay == 0)
+                CreateDrink();
+        }
+
         private string _selectedPaymentCardUsername;
         public string SelectedPaymentCardUsername
         {
@@ -105,32 +126,35 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
                 RaisePropertyChanged(() => PaymentCardRemainingAmount);
             }
         }
-
-        private double _remainingPriceToPay;
-        public double RemainingPriceToPay
+        private void CreateDrink()
         {
-            get { return _remainingPriceToPay; }
-            set { _remainingPriceToPay = value; RaisePropertyChanged(() => RemainingPriceToPay); }
+            _selectedDrink.LogDrinkMaking(LogText);
+            LogText.Add($"Finished making {_selectedDrink.Name}");
+            LogText.Add("------------------");
+            _selectedDrink = null;
         }
         #endregion Payment
 
         #region Coffee buttons
-        private Strength _coffeeStrength;
-        public Strength CoffeeStrength
+
+        private DrinkFactory _drinkFactory;
+        
+        private ContainmentLevel _coffeeStrength;
+        public ContainmentLevel CoffeeStrength
         {
             get { return _coffeeStrength; }
             set { _coffeeStrength = value; RaisePropertyChanged(() => CoffeeStrength); }
         }
 
-        private Amount _sugarAmount;
-        public Amount SugarAmount
+        private ContainmentLevel _sugarAmount;
+        public ContainmentLevel SugarAmount
         {
             get { return _sugarAmount; }
             set { _sugarAmount = value; RaisePropertyChanged(() => SugarAmount); }
         }
 
-        private Amount _milkAmount;
-        public Amount MilkAmount
+        private ContainmentLevel _milkAmount;
+        public ContainmentLevel MilkAmount
         {
             get { return _milkAmount; }
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }
@@ -138,123 +162,72 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
 
         public ICommand DrinkCommand => new RelayCommand<string>((drinkName) =>
         {
-            _selectedDrink = null;
-            switch (drinkName)
-            {
-                case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength };
-                    break;
-                case "Espresso":
-                    _selectedDrink = new Espresso();
-                    break;
-                case "Capuccino":
-                    _selectedDrink = new Capuccino();
-                    break;
-                case "Wiener Melange":
-                    _selectedDrink = new WienerMelange();
-                    break;
-                case "Café au Lait":
-                    _selectedDrink = new CafeAuLait();
-                    break;
-                default:
-                    LogText.Add($"Could not make {drinkName}, recipe not found.");
-                    break;
-            }
-            
-            if(_selectedDrink != null)
-            {
-                RemainingPriceToPay = _selectedDrink.GetPrice();
-                LogText.Add($"Selected {_selectedDrink.Name}, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
-                RaisePropertyChanged(() => RemainingPriceToPay);
-                RaisePropertyChanged(() => SelectedDrinkName);
-                RaisePropertyChanged(() => SelectedDrinkPrice);
-            }
+            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, ContainmentLevel.None);
+            UpdateDrinkInfo(false, false);
         });
 
         public ICommand DrinkWithSugarCommand => new RelayCommand<string>((drinkName) =>
         {
-            _selectedDrink = null;
-            RemainingPriceToPay = 0;
-            switch (drinkName)
-            {
-                case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount };
-                    break;
-                case "Espresso":
-                    _selectedDrink = new Espresso(){ HasSugar = true, SugarAmount = SugarAmount };
-                    break;
-                case "Capuccino":
-                    _selectedDrink = new Capuccino() { HasSugar = true, SugarAmount = SugarAmount };
-                    break;
-                case "Wiener Melange":
-                    _selectedDrink = new WienerMelange() { HasSugar = true, SugarAmount = SugarAmount };
-                    break;
-                default:
-                    LogText.Add($"Could not make {drinkName} with sugar, recipe not found.");
-                    break;
-            }
-
-            if (_selectedDrink != null)
-            {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.SugarPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: {RemainingPriceToPay.ToString("C", CultureInfo.CurrentCulture)}");
-                RaisePropertyChanged(() => RemainingPriceToPay);
-                RaisePropertyChanged(() => SelectedDrinkName);
-                RaisePropertyChanged(() => SelectedDrinkPrice);
-            }
+            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, _sugarAmount);
+            UpdateDrinkInfo(true, false);
         });
 
         public ICommand DrinkWithMilkCommand => new RelayCommand<string>((drinkName) =>
         {
-            switch (drinkName)
-            {
-                case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasMilk = true, MilkAmount = MilkAmount };
-                    break;
-                case "Espresso":
-                    _selectedDrink = new Espresso() { HasMilk = true, MilkAmount = MilkAmount };
-                    break;
-                default:
-                    LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
-                    break;
-            }
-
-            if (_selectedDrink != null)
-            {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.MilkPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with milk, price: {RemainingPriceToPay}");
-                RaisePropertyChanged(() => RemainingPriceToPay);
-                RaisePropertyChanged(() => SelectedDrinkName);
-                RaisePropertyChanged(() => SelectedDrinkPrice);
-            }
+            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, ContainmentLevel.None);
+            UpdateDrinkInfo(false, true);
         });
 
         public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
         {
-            _selectedDrink = null;
-            RemainingPriceToPay = 0;
-            switch (drinkName)
-            {
-                case "Coffee":
-                    _selectedDrink = new Coffee() { DrinkStrength = CoffeeStrength, HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-                    break;
-                case "Espresso":
-                    _selectedDrink = new Espresso() { HasSugar = true, SugarAmount = SugarAmount, HasMilk = true, MilkAmount = MilkAmount };
-                    break;
-                default:
-                    LogText.Add($"Could not make {drinkName} with milk, recipe not found.");
-                    break;
-            }
+            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, _sugarAmount);
+            UpdateDrinkInfo(true, true);
+        });
 
+        public ICommand TeaCommand =>new RelayCommand(()=>
+        {
+            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, ContainmentLevel.None, ContainmentLevel.None);
+            UpdateDrinkInfo(false, false);
+        });
+
+        public ICommand TeaWithSugarCommand => new RelayCommand(() =>
+        {
+            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, _sugarAmount, ContainmentLevel.None);
+            UpdateDrinkInfo(true, false);
+        });
+        
+        private void UpdateDrinkInfo(bool hasSugar, bool hasMilk)
+        {
             if (_selectedDrink != null)
             {
-                RemainingPriceToPay = _selectedDrink.GetPrice() + Drink.SugarPrice + Drink.MilkPrice;
-                LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: {RemainingPriceToPay}");
+                if (hasSugar)
+                {
+                    if (hasMilk)
+                    {
+                        RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE + MilkDrinkDecorator.MILK_PRICE;
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar and milk, price: €{RemainingPriceToPay}");
+                    }
+                    else
+                    {
+                        RemainingPriceToPay = _selectedDrink.GetPrice() + SugarDrinkDecorator.SUGAR_PRICE;
+                        LogText.Add($"Selected {_selectedDrink.Name} with sugar, price: €{RemainingPriceToPay}");
+                    }
+                }
+                else if (hasMilk)
+                {
+                    RemainingPriceToPay = _selectedDrink.GetPrice() + MilkDrinkDecorator.MILK_PRICE;
+                    LogText.Add($"Selected {_selectedDrink.Name} with milk, price: €{RemainingPriceToPay}");
+                }
+                else
+                {
+                    RemainingPriceToPay = _selectedDrink.GetPrice();
+                    LogText.Add($"Selected {_selectedDrink.Name}, price: €{RemainingPriceToPay}");
+                }
                 RaisePropertyChanged(() => RemainingPriceToPay);
                 RaisePropertyChanged(() => SelectedDrinkName);
                 RaisePropertyChanged(() => SelectedDrinkPrice);
             }
-        });
+        }
 
         #endregion Coffee buttons
     }
