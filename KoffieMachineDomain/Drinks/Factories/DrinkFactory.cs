@@ -76,12 +76,12 @@ namespace KoffieMachineDomain.Drinks
 
         public BaseDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
         {
-            BaseDrink drink = this.GetDrink(name);
+            BaseDrink drink = this.FetchDrink(name);
             drink = AddSupplements(strength, milk, sugar, drink);
                 return drink;
         }
 
-        private BaseDrink GetDrink(string name)
+        private BaseDrink FetchDrink(string name)
         {
             BaseDrink baseDrink = null;
             _drinks.TryGetValue(name, out baseDrink);
