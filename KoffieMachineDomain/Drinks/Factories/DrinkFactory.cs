@@ -1,4 +1,5 @@
-﻿using KoffieMachineDomain.Drinks.Decorators;
+﻿using KoffieMachineDomain.Drinks.Coffee.Special;
+using KoffieMachineDomain.Drinks.Decorators;
 using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,9 @@ namespace KoffieMachineDomain.Drinks
         public const string WIENER_MELANGE = "Wiener Melange";
         public const string CHOCOLATE = "Chocolate";
         public const string CHOCOLATE_DELUXE = "Chocolate Deluxe";
+        public const string IRISH_COFFEE = "Irish Coffee";
+        public const string SPANISH_COFFEE = "Spanish Coffee";
+        public const string ITALIAN_COFFEE = "Italian Coffee";
 
         private Dictionary<string, BaseDrink> _drinks;
 
@@ -39,6 +43,35 @@ namespace KoffieMachineDomain.Drinks
             _drinks[WIENER_MELANGE] = new WienerMelangeDrink();
             _drinks[CHOCOLATE] = new HotChocolateAdapter();
             _drinks[CHOCOLATE_DELUXE] = new HotChocolateDeluxeAdapter();
+            _drinks[IRISH_COFFEE] = GenerateSpecialDrink(IRISH_COFFEE);
+            _drinks[SPANISH_COFFEE] = GenerateSpecialDrink(SPANISH_COFFEE);
+            _drinks[ITALIAN_COFFEE] = GenerateSpecialDrink(ITALIAN_COFFEE);
+
+        }
+
+        private BaseDrink GenerateSpecialDrink(string name)
+        {
+            BaseDrink drink = null;
+            switch (name)
+            {
+                case IRISH_COFFEE:
+                    drink = new IrishCoffeeDrink();
+                    drink = new WhiskyDrinkDecorator(drink);
+                        break;
+                case SPANISH_COFFEE:
+                    drink = new SpanishCoffeeDrink();
+                    drink = new CointreauDrinkDecorator(drink);
+                    drink = new CognacDrinkDecorator(drink);
+                    break;
+                case ITALIAN_COFFEE:
+                    drink = new ItalianCoffeeDrink();
+                    drink = new AmarettoDrinkDecorator(drink);
+                    break;
+                default:
+                    throw new InvalidOperationException("Provided drink name does not exist");
+            }
+            drink = new WhipCreamDrinkDecorator(drink);
+            return drink;
         }
 
         public BaseDrink CreateDrink(string name, ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar)
@@ -54,12 +87,20 @@ namespace KoffieMachineDomain.Drinks
             _drinks.TryGetValue(name, out baseDrink);
             if (baseDrink == null)
             {
-                TeaBlend teaBlend = BlendRepo.GetTeaBlend(name);
-                if (teaBlend == null)
-                    throw new InvalidOperationException("Provided drink does not exist");
-                baseDrink = new TeaAdapter(teaBlend);
+                if (baseDrink == null)
+                {
+                    TeaBlend teaBlend = GetTeaBlend(name);
+                    if (teaBlend == null)
+                        throw new InvalidOperationException("Provided drink does not exist");
+                    baseDrink = new TeaAdapter(teaBlend);
+                }
             }
             return baseDrink;
+        }
+
+        private TeaBlend GetTeaBlend(string name)
+        {
+            return BlendRepo.GetTeaBlend(name);
         }
 
         private BaseDrink AddSupplements(ContainmentLevel strength, ContainmentLevel milk, ContainmentLevel sugar, BaseDrink drink)

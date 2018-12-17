@@ -195,7 +195,7 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, _sugarAmount, ContainmentLevel.None);
             UpdateDrinkInfo(true, false);
         });
-
+        
         private void UpdateDrinkInfo(bool hasSugar, bool hasMilk)
         {
             if (_selectedDrink != null)

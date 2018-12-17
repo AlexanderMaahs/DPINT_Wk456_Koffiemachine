@@ -6,7 +6,7 @@ namespace KoffieMachineDomain.Drinks
     {
         private HotChocolate _adaptee;
 
-        public HotChocolateAdapter()
+        public HotChocolateAdapter() : base("Chocolate")
         {
             _adaptee = new HotChocolate();
         }

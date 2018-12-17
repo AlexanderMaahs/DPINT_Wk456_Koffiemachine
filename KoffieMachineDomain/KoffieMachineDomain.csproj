@@ -42,6 +42,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Drinks\BaseDrink.cs" />
+    <Compile Include="Drinks\Coffee\Special\IrishCoffeeDrink.cs" />
+    <Compile Include="Drinks\Coffee\Special\ItalianCoffeeDrink.cs" />
+    <Compile Include="Drinks\Decorators\AmarettoDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\CognacDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\CointreauDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\WhipCreamDrinkDecorator.cs" />
+    <Compile Include="Drinks\Decorators\WhiskyDrinkDecorator.cs" />
+    <Compile Include="Drinks\Coffee\Special\SpanishCoffeeDrink.cs" />
     <Compile Include="Drinks\Tea\ChaiTeaBlend.cs" />
     <Compile Include="Drinks\Decorators\DeluxeDecorator.cs" />
     <Compile Include="Drinks\Tea\EarlGreyTeaBlend.cs" />

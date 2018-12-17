@@ -7,7 +7,7 @@ namespace KoffieMachineDomain.Drinks.Decorators
     {
         protected BaseDrink _nextDrink;
 
-        protected BaseDrinkDecorator(BaseDrink drink)
+        protected BaseDrinkDecorator(BaseDrink drink) : base(drink.Name)
         {
             _nextDrink = drink;
         }
@@ -20,8 +20,10 @@ namespace KoffieMachineDomain.Drinks.Decorators
 
         public override string Name
         {
-            get { return _nextDrink.Name; }
-            set { _nextDrink.Name = value; }
+            get { if(_nextDrink != null) return _nextDrink.Name;
+                return null;
+            }
+            set { if (_nextDrink != null) _nextDrink.Name = value; }
         }
 
         public override double GetPrice()

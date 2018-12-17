@@ -7,12 +7,17 @@ using System.Threading.Tasks;
 
 namespace KoffieMachineDomain.Drinks
 {
-    public class BaseDrink
+    public abstract class BaseDrink
     {
         public virtual string Name { get; set; }
         public virtual double Price { get; set; }
 
         protected const double BASE_PRICE = 1;
+
+        public BaseDrink(string name)
+        {
+            Name = name;
+        }
 
         public virtual double GetPrice()
         {

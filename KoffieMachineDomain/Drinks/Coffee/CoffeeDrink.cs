@@ -14,9 +14,8 @@ namespace KoffieMachineDomain.Drinks
         public virtual bool HasSugar { get; set; }
         public virtual bool HasMilk { get; set; }
 
-        public CoffeeDrink():base()
+        public CoffeeDrink():base("Koffie")
         {
-            Name = "Koffie";
         }
 
         public override double GetPrice()

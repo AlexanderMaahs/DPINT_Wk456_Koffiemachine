@@ -12,9 +12,8 @@ namespace KoffieMachineDomain.Drinks
     {
         private const double CAPUCCINO_PRICE = 0.8;
 
-        public CapuccinoDrink() : base()
+        public CapuccinoDrink() : base("Capuccino")
         {
-            Name = "Capuccino";
         }
 
         public override double GetPrice()

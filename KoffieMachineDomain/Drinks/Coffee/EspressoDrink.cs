@@ -13,9 +13,8 @@ namespace KoffieMachineDomain.Drinks
 
         private const double ESPRESSO_PRICE_MODIFIER = 0.7;
 
-        public EspressoDrink()
+        public EspressoDrink():base("Espresso")
         {
-            Name = "Espresso";
         }
 
         public override double GetPrice()

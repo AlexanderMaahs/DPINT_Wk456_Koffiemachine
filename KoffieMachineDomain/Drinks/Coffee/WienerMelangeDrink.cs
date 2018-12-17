@@ -11,9 +11,8 @@ namespace KoffieMachineDomain.Drinks
     {
         private const double WIENERMELANGE_PRICE_MODIFIER = 2;
 
-        public WienerMelangeDrink()
+        public WienerMelangeDrink():base("Wiener Melange")
         {
-            Name = "Wiener Melange";
         }
 
         public override double GetPrice()

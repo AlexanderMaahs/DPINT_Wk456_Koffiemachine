@@ -4,7 +4,7 @@
     {
         private HotChocolate _adaptee;
 
-        public HotChocolateDeluxeAdapter()
+        public HotChocolateDeluxeAdapter() : base("Chocolate Deluxe")
         {
             _adaptee = new HotChocolate();
             _adaptee.MakeDeluxe();

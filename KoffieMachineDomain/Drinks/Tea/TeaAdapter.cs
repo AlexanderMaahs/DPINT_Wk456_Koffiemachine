@@ -11,7 +11,7 @@ namespace KoffieMachineDomain.Drinks
     {
         private Tea _adaptee;
 
-        public TeaAdapter(TeaBlend teaBlend)
+        public TeaAdapter(TeaBlend teaBlend):base(teaBlend.Name)
         {
             _adaptee = new Tea();
             _adaptee.Blend = teaBlend;
