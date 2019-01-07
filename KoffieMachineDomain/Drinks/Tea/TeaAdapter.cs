@@ -11,7 +11,7 @@ namespace KoffieMachineDomain.Drinks
     {
         private Tea _adaptee;
 
-        public TeaAdapter(TeaBlend teaBlend):base(teaBlend.Name)
+        public TeaAdapter(TeaBlend teaBlend) : base(teaBlend.Name)
         {
             _adaptee = new Tea();
             _adaptee.Blend = teaBlend;
@@ -20,12 +20,15 @@ namespace KoffieMachineDomain.Drinks
         public override string Name
         {
             get { return _adaptee.Blend.Name; }
-            set { _adaptee.Blend.Name = value; }
         }
 
         public override double GetPrice()
         {
             return base.GetPrice() + _adaptee.Price;
+        }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
         }
     }
 }

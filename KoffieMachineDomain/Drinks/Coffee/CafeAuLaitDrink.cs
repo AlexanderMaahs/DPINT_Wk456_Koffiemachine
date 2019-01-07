@@ -22,7 +22,6 @@ namespace KoffieMachineDomain.Drinks
 
         public override void LogDrinkMaking(ObservableCollection<string> log)
         {
-            base.LogDrinkMaking(log);
             log.Add("Filling half with coffee...");
             log.Add("Filling other half with milk...");
         }

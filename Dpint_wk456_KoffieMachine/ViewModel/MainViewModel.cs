@@ -46,7 +46,6 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             //Tea
             TeaNames = new ObservableCollection<string>(_drinkFactory.BlendRepo.BlendNames);
             SelectedTeaName = TeaNames[0];
-
         }
 
         #region Drink properties to bind to
@@ -128,6 +127,8 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
         }
         private void CreateDrink()
         {
+            LogText.Add($"Making {SelectedDrinkName}...");
+            LogText.Add($"Heating up...");
             _selectedDrink.LogDrinkMaking(LogText);
             LogText.Add($"Finished making {_selectedDrink.Name}");
             LogText.Add("------------------");
@@ -160,42 +161,37 @@ namespace Dpint_wk456_KoffieMachine.ViewModel
             set { _milkAmount = value; RaisePropertyChanged(() => MilkAmount); }
         }
 
-        public ICommand DrinkCommand => new RelayCommand<string>((drinkName) =>
+        public ICommand DrinkCommand => new RelayCommand<object[]>((parameters) =>
         {
-            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, ContainmentLevel.None);
-            UpdateDrinkInfo(false, false);
+            string[] values = (string[])parameters;
+            var drinkName = values[0];
+            var additives = values[1];
+
+            ContainmentLevel sugarLevel = ContainmentLevel.None;
+            ContainmentLevel milkLevel = ContainmentLevel.None;
+
+            if (drinkName.Equals("Tea"))
+                drinkName = SelectedTeaName;
+
+            switch (additives)
+            {
+                case "Sugar":
+                    sugarLevel = _sugarAmount;
+                    break;
+                case "Milk":
+                    milkLevel = _milkAmount;
+                    break;
+                case "SugarMilk":
+                    sugarLevel = _sugarAmount;
+                    milkLevel = _milkAmount;
+                    break;
+                default:
+                    break;
+            }
+            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, milkLevel, sugarLevel);
+            UpdateDrinkInfo(sugarLevel != ContainmentLevel.None, milkLevel != ContainmentLevel.None);
         });
 
-        public ICommand DrinkWithSugarCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, ContainmentLevel.None, _sugarAmount);
-            UpdateDrinkInfo(true, false);
-        });
-
-        public ICommand DrinkWithMilkCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, ContainmentLevel.None);
-            UpdateDrinkInfo(false, true);
-        });
-
-        public ICommand DrinkWithSugarAndMilkCommand => new RelayCommand<string>((drinkName) =>
-        {
-            _selectedDrink = _drinkFactory.CreateDrink(drinkName, _coffeeStrength, _milkAmount, _sugarAmount);
-            UpdateDrinkInfo(true, true);
-        });
-
-        public ICommand TeaCommand =>new RelayCommand(()=>
-        {
-            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, ContainmentLevel.None, ContainmentLevel.None);
-            UpdateDrinkInfo(false, false);
-        });
-
-        public ICommand TeaWithSugarCommand => new RelayCommand(() =>
-        {
-            _selectedDrink = _drinkFactory.CreateDrink(SelectedTeaName, ContainmentLevel.None, _sugarAmount, ContainmentLevel.None);
-            UpdateDrinkInfo(true, false);
-        });
-        
         private void UpdateDrinkInfo(bool hasSugar, bool hasMilk)
         {
             if (_selectedDrink != null)

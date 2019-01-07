@@ -1,6 +1,7 @@
 ﻿using KoffieMachineDomain.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,10 @@ namespace KoffieMachineDomain.Drinks
         public override double GetPrice()
         {
             return base.GetPrice() * WIENERMELANGE_PRICE_MODIFIER;
+        }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
         }
     }
 }

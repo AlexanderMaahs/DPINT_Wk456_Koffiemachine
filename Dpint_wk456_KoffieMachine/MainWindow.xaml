@@ -8,10 +8,11 @@
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Platform"
         xmlns:helpers="clr-namespace:Dpint_wk456_KoffieMachine.Helpers"
         mc:Ignorable="d"
-        Title="MainWindow" Height="620" Width="900"
+        Title="MainWindow" Height="700" Width="900"
         DataContext="{Binding Main, Source={StaticResource Locator }}">
     <Window.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBool"/>
+        <helpers:MultipleParameterConverter x:Key="MultipleParameterConverter"/>
         <Image x:Key="5cents" Source="Images/5cents.png" />
         <Image x:Key="10cents" Source="Images/10cents.png" />
         <Image x:Key="20cents" Source="Images/20cents.png" />
@@ -71,79 +72,193 @@
             <Separator />
             <Label Content="Coffee" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="CoffeePanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Coffee"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Coffee"/>
+                            <Binding Source="Sugar"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Coffee"/>
+                            <Binding Source="Milk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + milk</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Coffee"/>
+                            <Binding Source="SugarMilk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Coffee + sugar + milk</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Espresso" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="EsspressoPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Espresso"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Espresso"/>
+                            <Binding Source="Sugar"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Espresso"/>
+                            <Binding Source="Milk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + milk</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Espresso" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Espresso"/>
+                            <Binding Source="SugarMilk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Espresso + sugar + milk</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Specialties" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="SpecialtiesPanelTop" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkWithMilkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Capuccino"/>
+                            <Binding Source="Milk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Capuccino</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarAndMilkCommand}" CommandParameter="Capuccino" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Capuccino"/>
+                            <Binding Source="SugarMilk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Capuccino + sugar</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Wiener Melange" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Wiener Melange"/>
+                            <Binding Source="SugarMilk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Wiener Melange</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Café au Lait" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Café au Lait"/>
+                            <Binding Source="Milk"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Café au Lait</TextBlock>
                 </Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal" Name="SpecialtiesPanelBottom" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Irish Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Irish Coffee"/>
+                            <Binding Source="Sugar"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Irish Coffee</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Spanish Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Spanish Coffee"/>
+                            <Binding Source="Sugar"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Spanish Coffee</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkWithSugarCommand}" CommandParameter="Italian Coffee" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Italian Coffee"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Italian Coffee</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Chocolate" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="ChocolatePanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Chocolate" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Chocolate"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Chocolate</TextBlock>
                 </Button>
-                <Button Command="{Binding DrinkCommand}" CommandParameter="Chocolate Deluxe" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Chocolate Deluxe"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Chocolate Deluxe</TextBlock>
                 </Button>
             </StackPanel>
             <Separator />
             <Label Content="Tea" FontWeight="Bold"/>
             <StackPanel Orientation="Horizontal" Name="TeaPanel" HorizontalAlignment="Center" Margin="5">
-                <Button Command="{Binding TeaCommand}" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Tea"/>
+                            <Binding Source="None"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Tea</TextBlock>
                 </Button>
-                <Button Command="{Binding TeaWithSugarCommand}" Style="{StaticResource DrinkButton}">
+                <Button Command="{Binding DrinkCommand}" Style="{StaticResource DrinkButton}">
+                    <Button.CommandParameter>
+                        <MultiBinding Converter="{StaticResource MultipleParameterConverter}">
+                            <Binding Source="Tea"/>
+                            <Binding Source="Sugar"/>
+                        </MultiBinding>
+                    </Button.CommandParameter>
                     <TextBlock>Tea + sugar</TextBlock>
                 </Button>
                 <ComboBox ItemsSource="{Binding TeaNames}" SelectedValue="{Binding SelectedTeaName}" />
