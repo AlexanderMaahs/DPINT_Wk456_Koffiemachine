@@ -20,5 +20,9 @@ namespace KoffieMachineDomain.Drinks
         {
             return base.GetPrice() + CAPUCCINO_PRICE;
         }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
+        }
     }
 }

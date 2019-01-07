@@ -1,4 +1,6 @@
-﻿namespace KoffieMachineDomain.Drinks
+﻿using System.Collections.ObjectModel;
+
+namespace KoffieMachineDomain.Drinks
 {
     internal class HotChocolateDeluxeAdapter : BaseDrink
     {
@@ -18,6 +20,10 @@
         public override double GetPrice()
         {
             return _adaptee.Cost();
+        }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
         }
     }
 }

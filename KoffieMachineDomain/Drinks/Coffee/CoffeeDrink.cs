@@ -14,13 +14,17 @@ namespace KoffieMachineDomain.Drinks
         public virtual bool HasSugar { get; set; }
         public virtual bool HasMilk { get; set; }
 
-        public CoffeeDrink():base("Koffie")
+        public CoffeeDrink():base("Coffee")
         {
         }
 
         public override double GetPrice()
         {
             return base.GetPrice();
+        }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
         }
 
     }

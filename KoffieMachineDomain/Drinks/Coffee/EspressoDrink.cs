@@ -21,5 +21,9 @@ namespace KoffieMachineDomain.Drinks
         {
             return base.GetPrice() + ESPRESSO_PRICE_MODIFIER;
         }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
+        }
     }
 }

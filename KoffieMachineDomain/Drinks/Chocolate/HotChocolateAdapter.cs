@@ -20,5 +20,9 @@ namespace KoffieMachineDomain.Drinks
         {
             return _adaptee.Cost();
         }
+
+        public override void LogDrinkMaking(ObservableCollection<string> log)
+        {
+        }
     }
 }
